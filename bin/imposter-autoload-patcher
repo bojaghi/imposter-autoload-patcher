@@ -1,0 +1,49 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../src/AutoloadPatcher.php';
+
+use Bojaghi\ImposterAutoloadPatcher\AutoloadPatcher;
+
+if ('cli' !== php_sapi_name()) {
+    echo 'This script is only for command line.';
+    return 1;
+}
+
+function main(): int
+{
+    $args = getopt('c::d::h');
+
+    if (isset($args['h'])) {
+        help();
+        return 0;
+    }
+
+    $cwd      = getcwd();
+    $composer = $args['c'] ?? "$cwd/composer.json";
+    $patcher  = new AutoloadPatcher($composer);
+
+    try {
+        $patcher->patch();
+    } catch (Exception $e) {
+        echo $e->getMessage();
+        return 1;
+    }
+
+    return 0;
+}
+
+function help(): void
+{
+    global $argv;
+
+    $cmd = basename($argv[0]);
+
+    echo PHP_EOL;
+    echo "Usage: $cmd [options]\n\n";
+    echo "Options:\n";
+    echo "  -c [composer-path] Set composer.json path, defaults to current working directory's composer.json.\n";
+    echo PHP_EOL;
+}
+
+exit(main());

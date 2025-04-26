@@ -1,0 +1,15 @@
+{
+  "name": "Test composer",
+  "config": {
+    "vendor-dir": "test-vendor"
+  },
+  "extra": {
+    "imposterAutoloadPatcher": {
+      "prefix": "My\\Test\\Vendor",
+      "targets": [
+        "Bojaghi\\",
+        "Psr\\"
+      ]
+    }
+  }
+}

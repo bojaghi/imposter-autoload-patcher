@@ -1,9 +1,7 @@
 # CHANGELOG
 
-## 1.0.1
+## 1.0.0-beta.1
 
-Update code style.
+2025-04-27
 
-## 1.0.0
-
-Initial setup.
+The first implementation.
