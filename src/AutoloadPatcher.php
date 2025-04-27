@@ -39,7 +39,7 @@ class AutoloadPatcher
         );
     }
 
-    public function patch(): void
+    public function patchStatic(): void
     {
         $file = $this->vendor . '/composer/autoload_static.php';
 
@@ -55,6 +55,36 @@ class AutoloadPatcher
         $content = $this->patchDirs($content);
 
         file_put_contents($file, $content);
+    }
+
+    public function patchInstalled($alt = ''): void
+    {
+        if ($alt) {
+            $file = $alt;
+        } else {
+            $file = $this->vendor . '/composer/installed.json';
+        }
+        $content = json_decode(file_get_contents($file) ?: '', true) ?: [];
+
+        if (!$content) {
+            return;
+        }
+
+        foreach ($content['packages'] as &$package) {
+            if (!isset($package['autoload']['psr-4'])) {
+                continue;
+            }
+            $psr4 = &$package['autoload']['psr-4'];
+            foreach ($psr4 as $namespace => $path) {
+                if (preg_match("/^$this->targets/", $namespace)) {
+                    unset($psr4[$namespace]);
+                    $psr4[$this->prefix . $namespace] = $path;
+                }
+            }
+        }
+
+        file_put_contents('/home/changwoo/installed.patched.json',
+                          json_encode($content, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE));
     }
 
     /**

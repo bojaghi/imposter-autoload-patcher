@@ -1,5 +1,7 @@
 # Imposter Autoload Patcher
 
+Important: this is just for research purpose. Use [imposter-plugin](https://github.com/typisttech/imposter-plugin) instead.
+
 This package aims for helping [imposter](https://github.com/typisttech/imposter)
 when developers want to use patched classes by imposter in runtime.
 

@@ -45,5 +45,7 @@ class TestAutoloadPatcher extends WP_UnitTestCase
         $expected = file_get_contents(__DIR__ . '/test-obj/test-vendor/composer/autoload_static.patched.php');
 
         $this->assertEquals($expected, $content);
+
+        $this->patcher->patchInstalled(__DIR__ . '/test-obj/test-vendor/composer/installed.json');
     }
 }
